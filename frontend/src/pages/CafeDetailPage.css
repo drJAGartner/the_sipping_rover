@@ -1,0 +1,132 @@
+.cafe-detail-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.cafe-detail-header {
+  padding: 16px 20px 20px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.back-link {
+  font-size: 14px;
+  color: var(--color-accent);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.cafe-detail-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.cafe-detail-address {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.yelp-link {
+  font-size: 14px;
+  color: var(--color-accent);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.cafe-reviews {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cafe-reviews h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.review-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.review-thumb {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.review-body {
+  flex: 1;
+}
+
+.review-scores {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px 12px;
+  margin-bottom: 10px;
+}
+
+.review-score-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.score-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.score-stars {
+  font-size: 12px;
+  color: var(--color-accent);
+  letter-spacing: -1px;
+}
+
+.review-notes {
+  font-size: 13px;
+  color: var(--color-text);
+  font-style: italic;
+}
+
+.cafe-no-reviews {
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.review-byline {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.add-details-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+
+.reviews-divider {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding: 4px 0 2px;
+}

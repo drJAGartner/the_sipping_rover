@@ -1,0 +1,158 @@
+.onboarding-page {
+  min-height: 100vh;
+  padding: 40px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: var(--color-bg);
+}
+
+.onboarding-header {
+  text-align: center;
+}
+
+.onboarding-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.onboarding-header p {
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: background 0.2s;
+}
+
+.dot.filled {
+  background: var(--color-accent);
+}
+
+.progress-label {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.onboarding-search form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.onboarding-search input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  background: var(--color-surface);
+}
+
+.onboarding-search button {
+  padding: 12px 18px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.cafe-results {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cafe-results li {
+  background: var(--color-surface);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: border-color 0.15s;
+}
+
+.cafe-results li:hover {
+  border-color: var(--color-accent);
+}
+
+.cafe-results li strong {
+  font-size: 15px;
+}
+
+.cafe-results li span {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.onboarding-rate {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.onboarding-rate h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.cafe-address {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.rate-prompt {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.thumb-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.thumb-btn {
+  flex: 1;
+  padding: 14px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  background: var(--color-bg);
+  transition: all 0.15s;
+}
+
+.thumb-btn.selected {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+  color: var(--color-primary);
+}
+
+.btn-back {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 4px;
+}

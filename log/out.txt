@@ -1,0 +1,31 @@
+time="2026-04-06T17:42:32-05:00" level=warning msg="No services to build"
+ Container the_sipping_rover-db-1 Running 
+ Container the_sipping_rover-backend-1 Running 
+Attaching to backend-1, db-1, frontend-1
+ Container the_sipping_rover-db-1 Waiting 
+ Container the_sipping_rover-db-1 Healthy 
+ Container the_sipping_rover-frontend-1 Starting 
+ Container the_sipping_rover-frontend-1 Started 
+frontend-1  | 
+frontend-1  | > the-sipping-rover@0.1.0 dev
+frontend-1  | > vite
+frontend-1  | 
+frontend-1  | 
+frontend-1  |   VITE v5.4.21  ready in 128 ms
+frontend-1  | 
+frontend-1  |   ➜  Local:   http://localhost:5173/
+frontend-1  |   ➜  Network: http://172.23.0.4:5173/
+frontend-1  | 10:42:59 PM [vite] http proxy error: /auth/register
+frontend-1  | AggregateError [ECONNREFUSED]: 
+frontend-1  |     at internalConnectMultiple (node:net:1122:18)
+frontend-1  |     at afterConnectMultiple (node:net:1689:7)
+db-1        | 2026-04-06 22:46:42.568 UTC [28] LOG:  checkpoint starting: time
+db-1        | 2026-04-06 22:46:50.854 UTC [28] LOG:  checkpoint complete: wrote 84 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=8.156 s, sync=0.107 s, total=8.287 s; sync files=69, longest=0.010 s, average=0.002 s; distance=348 kB, estimate=348 kB; lsn=0/19B6DC8, redo lsn=0/19B6D90
+ Compose Stopping Gracefully Stopping... press Ctrl+C again to force
+ Container the_sipping_rover-frontend-1 Stopping 
+ Container the_sipping_rover-frontend-1 Stopped 
+ Container the_sipping_rover-backend-1 Stopping 
+ Container the_sipping_rover-backend-1 Stopped 
+ Container the_sipping_rover-db-1 Stopping 
+ Container the_sipping_rover-db-1 Stopped 
+

@@ -1,0 +1,123 @@
+.rate-details-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.rate-details-header {
+  padding: 16px 20px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rate-details-progress {
+  display: flex;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: background 0.2s;
+}
+
+.progress-dot.active {
+  background: var(--color-accent);
+}
+
+.rate-details-screen {
+  flex: 1;
+  padding: 24px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.screen-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.characteristics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.characteristic-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.characteristic-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.characteristic-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.characteristic-hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.rating-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.rating-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 4px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  transition: all 0.15s;
+}
+
+.rating-btn.active {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+}
+
+.rating-stars {
+  font-size: 13px;
+  color: var(--color-accent);
+  letter-spacing: -1px;
+}
+
+.rating-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.rating-btn.active .rating-label {
+  color: var(--color-primary);
+}
+
+.rate-details-footer {
+  padding: 16px 20px 32px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.next-btn {
+  width: 100%;
+}
