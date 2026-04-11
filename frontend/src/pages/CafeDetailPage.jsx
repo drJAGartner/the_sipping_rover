@@ -27,7 +27,16 @@ function ReviewCard({ review, isOwn, cafeId }) {
     <div className="review-card">
       <div className="review-thumb">{review.thumb === 'up' ? '👍' : review.thumb === 'down' ? '👎' : '—'}</div>
       <div className="review-body">
-        {isOwn && <div className="review-byline">Your review</div>}
+        {isOwn
+          ? <div className="review-byline">Your review</div>
+          : review.user_display_name && (
+            <div className="review-byline">
+              <Link to={`/profile/${review.user_id}`} className="review-user-link">
+                {review.user_display_name}
+              </Link>
+            </div>
+          )
+        }
         {review.has_details && (
           <div className="review-scores">
             {CHARACTERISTICS.map(([key, label]) => (

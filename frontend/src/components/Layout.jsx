@@ -16,6 +16,10 @@ export default function Layout() {
           <span className="nav-icon">📓</span>
           <span className="nav-label">Journal</span>
         </NavLink>
+        <NavLink to="/feed" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          <span className="nav-icon">👥</span>
+          <span className="nav-label">Feed</span>
+        </NavLink>
         <NavLink to="/profile" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
           <span className="nav-icon">👤</span>
           <span className="nav-label">Profile</span>

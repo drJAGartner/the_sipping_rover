@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../hooks/useAuth'
 import client from '../api/client'
+import { followUser, unfollowUser, getUserVisits } from '../api/users'
 import './ProfilePage.css'
 
 const ORDERING_PRESETS = {
@@ -17,6 +18,9 @@ export default function ProfilePage() {
   const targetId = userId || me?.id
   const isSelf = !userId || userId === me?.id
 
+  const queryClient = useQueryClient()
+  const [following, setFollowing] = useState(null) // null = use server value
+  const [followLoading, setFollowLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [homeCafeQuery, setHomeCafeQuery] = useState('')
@@ -33,6 +37,30 @@ export default function ProfilePage() {
     queryFn: () => client.get(`/users/${targetId}`).then((r) => r.data),
     enabled: !!targetId,
   })
+
+  const { data: userVisits } = useQuery({
+    queryKey: ['user-visits', targetId],
+    queryFn: () => getUserVisits(targetId).then((r) => r.data),
+    enabled: !!targetId && !isSelf,
+  })
+
+  const isFollowing = following !== null ? following : profile?.is_following
+
+  const handleFollow = async () => {
+    setFollowLoading(true)
+    try {
+      if (isFollowing) {
+        await unfollowUser(targetId)
+        setFollowing(false)
+      } else {
+        await followUser(targetId)
+        setFollowing(true)
+      }
+      queryClient.invalidateQueries({ queryKey: ['profile', targetId] })
+    } finally {
+      setFollowLoading(false)
+    }
+  }
 
 const searchHomeCafe = async (e) => {
     e.preventDefault()
@@ -83,7 +111,18 @@ const searchHomeCafe = async (e) => {
   return (
     <div className="profile-page">
       <header className="profile-header">
-        <h1>{profile.display_name}</h1>
+        <div className="profile-header-row">
+          <h1>{profile.display_name}</h1>
+          {!isSelf && (
+            <button
+              className={`follow-btn ${isFollowing ? 'following' : ''}`}
+              onClick={handleFollow}
+              disabled={followLoading}
+            >
+              {followLoading ? '…' : isFollowing ? 'Following' : 'Follow'}
+            </button>
+          )}
+        </div>
         <div className="profile-stats">
           <span><strong>{profile.follower_count}</strong> followers</span>
           <span><strong>{profile.following_count}</strong> following</span>
@@ -125,6 +164,29 @@ const searchHomeCafe = async (e) => {
           <p className="muted">No home cafe set.</p>
         )}
       </section>
+
+      {!isSelf && (
+        <section className="profile-section">
+          <h2>Reviews</h2>
+          {!userVisits && <p className="muted">Loading…</p>}
+          {userVisits?.length === 0 && <p className="muted">No public reviews yet.</p>}
+          {userVisits?.length > 0 && (
+            <ul className="user-visits-list">
+              {userVisits.map((visit) => (
+                <li key={visit.id} className="user-visit-item">
+                  <Link to={`/cafe/${visit.cafe_id}`} className="user-visit-cafe">
+                    <span className="user-visit-thumb">
+                      {visit.thumb === 'up' ? '👍' : visit.thumb === 'down' ? '👎' : '—'}
+                    </span>
+                    <span className="user-visit-name">{visit.cafe_name}</span>
+                  </Link>
+                  {visit.notes && <p className="user-visit-notes">{visit.notes}</p>}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
 
       {isSelf && (
         <>

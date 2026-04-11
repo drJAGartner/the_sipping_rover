@@ -122,6 +122,11 @@
   margin-bottom: 4px;
 }
 
+.review-user-link {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
 .reviews-divider {
   font-size: 12px;
   font-weight: 700;

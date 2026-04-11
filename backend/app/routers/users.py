@@ -4,7 +4,7 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.auth import get_current_user
+from app.auth import get_current_user, get_optional_user
 from app.database import get_db
 from app.models.user import User
 from app.models.follow import Follow
@@ -43,7 +43,7 @@ async def update_me(body: UserUpdate, current_user: User = Depends(get_current_u
 
 
 @router.get("/{user_id}", response_model=UserProfile)
-async def get_profile(user_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+async def get_profile(user_id: uuid.UUID, current_user: User = Depends(get_optional_user), db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if not user:
@@ -52,12 +52,20 @@ async def get_profile(user_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
     follower_count = await db.scalar(select(func.count()).where(Follow.followee_id == user_id))
     following_count = await db.scalar(select(func.count()).where(Follow.follower_id == user_id))
 
+    is_following = False
+    if current_user and current_user.id != user_id:
+        existing = await db.scalar(
+            select(func.count()).where(Follow.follower_id == current_user.id, Follow.followee_id == user_id)
+        )
+        is_following = (existing or 0) > 0
+
     return UserProfile(
         id=user.id,
         display_name=user.display_name,
         home_cafe_id=user.home_cafe_id,
         follower_count=follower_count or 0,
         following_count=following_count or 0,
+        is_following=is_following,
     )
 
 

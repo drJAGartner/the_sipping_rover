@@ -12,6 +12,7 @@ import SettingsPage from './pages/SettingsPage'
 import TierListPage from './pages/TierListPage'
 import RateDetailsPage from './pages/RateDetailsPage'
 import TierListViewPage from './pages/TierListViewPage'
+import FeedPage from './pages/FeedPage'
 
 function RequireAuth({ children }) {
   const { user, loading } = useAuth()
@@ -30,6 +31,7 @@ function AppRoutes() {
       <Route element={<Layout />}>
         <Route path="/" element={<RequireAuth><BrewTodayPage /></RequireAuth>} />
 <Route path="/journal" element={<RequireAuth><JournalPage /></RequireAuth>} />
+        <Route path="/feed" element={<RequireAuth><FeedPage /></RequireAuth>} />
         <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
         <Route path="/profile/:userId" element={<RequireAuth><ProfilePage /></RequireAuth>} />
         <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />

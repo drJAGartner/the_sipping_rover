@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, desc, nullslast
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,7 +10,8 @@ from app.database import get_db
 from app.models.visit import Visit
 from app.models.cafe import Cafe
 from app.models.user import User
-from app.schemas.visit import VisitCreate, VisitUpdate, VisitOut
+from app.models.follow import Follow
+from app.schemas.visit import VisitCreate, VisitUpdate, VisitOut, PublicVisitOut
 
 router = APIRouter(prefix="/visits", tags=["visits"])
 
@@ -20,6 +21,12 @@ def _enrich(visit: Visit) -> dict:
     d["cafe_name"] = visit.cafe.name if visit.cafe else None
     d["cafe_address"] = visit.cafe.address if visit.cafe else None
     d["cafe_website"] = visit.cafe.website if visit.cafe else None
+    return d
+
+
+def _enrich_public(visit: Visit) -> dict:
+    d = _enrich(visit)
+    d["user_display_name"] = visit.user.display_name if visit.user else "Unknown"
     return d
 
 
@@ -105,9 +112,41 @@ async def my_visit_for_cafe(cafe_id: uuid.UUID, current_user: User = Depends(get
     return _enrich(visit)
 
 
-@router.get("/cafe/{cafe_id}/public", response_model=list[VisitOut])
+@router.get("/cafe/{cafe_id}/public", response_model=list[PublicVisitOut])
 async def public_visits_for_cafe(cafe_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
     result = await db.execute(
-        select(Visit).where(Visit.cafe_id == cafe_id, Visit.visibility == "public").options(selectinload(Visit.cafe))
+        select(Visit)
+        .where(Visit.cafe_id == cafe_id, Visit.visibility == "public")
+        .options(selectinload(Visit.cafe), selectinload(Visit.user))
+        .order_by(nullslast(desc(Visit.last_checkin_at)), desc(Visit.updated_at))
     )
-    return [_enrich(v) for v in result.scalars().all()]
+    return [_enrich_public(v) for v in result.scalars().all()]
+
+
+@router.get("/user/{user_id}", response_model=list[PublicVisitOut])
+async def user_public_visits(user_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Visit)
+        .where(Visit.user_id == user_id, Visit.visibility == "public")
+        .options(selectinload(Visit.cafe), selectinload(Visit.user))
+        .order_by(nullslast(desc(Visit.last_checkin_at)), desc(Visit.updated_at))
+    )
+    return [_enrich_public(v) for v in result.scalars().all()]
+
+
+@router.get("/feed", response_model=list[PublicVisitOut])
+async def feed(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    follows = await db.execute(
+        select(Follow.followee_id).where(Follow.follower_id == current_user.id)
+    )
+    followee_ids = [row[0] for row in follows.all()]
+    if not followee_ids:
+        return []
+    result = await db.execute(
+        select(Visit)
+        .where(Visit.user_id.in_(followee_ids), Visit.visibility == "public")
+        .options(selectinload(Visit.cafe), selectinload(Visit.user))
+        .order_by(nullslast(desc(Visit.last_checkin_at)), desc(Visit.updated_at))
+        .limit(50)
+    )
+    return [_enrich_public(v) for v in result.scalars().all()]

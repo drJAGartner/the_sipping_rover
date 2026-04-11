@@ -34,5 +34,6 @@ class UserProfile(BaseModel):
     home_cafe_id: Optional[uuid.UUID]
     follower_count: int
     following_count: int
+    is_following: bool = False
 
     model_config = {"from_attributes": True}
